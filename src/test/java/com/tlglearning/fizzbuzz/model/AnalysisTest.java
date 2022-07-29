@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.EnumSet;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -57,21 +56,7 @@ class AnalysisTest {
   @ParameterizedTest
   @ValueSource(ints = {-1, -3, -5, -15})
   void analyze_negative(int value) {
-    assertThrows(IllegalArgumentException.class, new InvalidInvocation(value));
+    assertThrows(IllegalArgumentException.class, new InvalidInvocation(analysis, value));
   }
 
-  private class InvalidInvocation implements Executable {
-
-    private final int value;
-
-    public InvalidInvocation(int value) {
-      this.value = value;
-    }
-
-    @Override
-    public void execute() throws Throwable {
-      analysis.analyze(value);
-    }
-
-  }
 }
