@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class AnalysisTest {
+
   static final Set<State> fizzExpected = EnumSet.of(State.FIZZ);
   static final Set<State> fizzBuzzExpected = EnumSet.of(State.BUZZ, State.FIZZ);
   static final Set<State> buzzExpected = EnumSet.of(State.BUZZ);
@@ -57,20 +58,14 @@ class AnalysisTest {
   @ParameterizedTest
   @ValueSource(ints = {-1, -3, -5, -15})
   void analyze_negative(int value) {
-    class InvalidInvocation implements Executable {
-
-      private final int value;
-
-      public InvalidInvocation(int value) {
-        this.value = value;
-      }
+    Executable invalidInvocation = new Executable() {
 
       @Override
       public void execute() throws Throwable {
         analysis.analyze(value);
       }
 
-    }
-    assertThrows(IllegalArgumentException.class, new InvalidInvocation(value));
+    };
+    assertThrows(IllegalArgumentException.class, invalidInvocation);
   }
 }
